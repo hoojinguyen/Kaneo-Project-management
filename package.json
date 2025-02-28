@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "turbo build",
+    "build:web": "cd apps/web && bun run build",
+    "build:api": "cd apps/api && bun run build",
     "dev": "turbo dev",
     "prepare": "husky"
   },
