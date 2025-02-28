@@ -33,9 +33,11 @@ async function signUp({ email, name, password }: SignUpArgs) {
     throw new Error(UserErrors.NotFound);
   }
 
-  publishEvent("user.signed_up", {
-    email: user.email,
-  });
+  if(process.env.EVENT_QUEUE_ENABLED === "true") {
+    publishEvent("user.signed_up", {
+      email: user.email,
+    });
+  }
 
   return user;
 }

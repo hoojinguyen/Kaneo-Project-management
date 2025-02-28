@@ -117,8 +117,11 @@ export async function subscribeToEvent<T>(
   }
 }
 
-initializeEventBus().catch(console.error);
+if(process.env.EVENT_QUEUE_ENABLED === "true"){
+  initializeEventBus().catch(console.error);
 
-process.on("SIGTERM", () => {
-  shutdownEventBus().catch(console.error);
-});
+  process.on("SIGTERM", () => {
+    shutdownEventBus().catch(console.error);
+  });  
+}
+
