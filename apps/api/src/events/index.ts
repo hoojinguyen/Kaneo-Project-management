@@ -42,8 +42,8 @@ export async function initializeEventBus(): Promise<void> {
   try {
     await getChannel();
   } catch (error) {
-    console.error("Failed to initialize RabbitMQ:", error);
-    throw error;
+    console.warn("Failed to initialize RabbitMQ:", error);
+    // Don't throw error, just log warning
   }
 }
 
@@ -62,15 +62,15 @@ export async function publishEvent(
   eventType: string,
   data: unknown,
 ): Promise<void> {
-  const channel = await getChannel();
-
-  const payload: EventPayload = {
-    type: eventType,
-    data,
-    timestamp: new Date().toISOString(),
-  };
-
   try {
+    const channel = await getChannel();
+    
+    const payload: EventPayload = {
+      type: eventType,
+      data,
+      timestamp: new Date().toISOString(),
+    };
+
     channel.publish(
       EXCHANGE_NAME,
       eventType,
@@ -78,8 +78,8 @@ export async function publishEvent(
       { persistent: true },
     );
   } catch (error) {
-    console.error("Failed to publish event:", error);
-    throw error;
+    console.warn('Failed to publish event:', error);
+    // Don't throw error, just log warning
   }
 }
 
