@@ -13,9 +13,15 @@ import purgeData from "./utils/purge-demo-data";
 import workspace from "./workspace";
 import workspaceUser from "./workspace-user";
 
+const corsOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173").split(",");
+
 const app = new Elysia()
   .state("userEmail", "")
-  .use(cors())
+  .use(cors({
+    origin: corsOrigins,
+    credentials: true,
+    allowedHeaders: ['content-type', 'authorization'],
+  }))
   .use(user)
   .use(
     cron({
