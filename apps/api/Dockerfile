@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     python3 \
     make \
     g++ \
+    sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package.json .
@@ -28,7 +29,11 @@ COPY --from=base /app/node_modules ../node_modules
 COPY --from=base /app/packages ../packages
 
 ENV NODE_ENV=production
+ENV PORT=8080
+ENV DB_PATH=/app/apps/api/data/kaneo.db
+ENV JWT_ACCESS=hooji98
+ENV RABBITMQ_URL=amqp://hooji98:hooji98@rabbitmq-render-5rc5.onrender.com
 
-EXPOSE 1337
+EXPOSE 8080
 
 CMD ["bun", "run", "/app/apps/api/src/index.ts"]
