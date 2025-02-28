@@ -20,8 +20,6 @@ const app = new Elysia()
   .use(cors({
     origin: corsOrigins,
     credentials: true,
-    allowedHeaders: ['content-type', 'authorization'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   }))
   .use(user)
   .use(
