@@ -118,6 +118,7 @@ export async function subscribeToEvent<T>(
 }
 
 if(process.env.EVENT_QUEUE_ENABLED === "true"){
+  console.log("RabbitMQ is starting at", process.env.RABBITMQ_URL);
   initializeEventBus().catch(console.error);
 
   process.on("SIGTERM", () => {
