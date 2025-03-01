@@ -13,14 +13,13 @@ import purgeData from "./utils/purge-demo-data";
 import workspace from "./workspace";
 import workspaceUser from "./workspace-user";
 
-const corsOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173").split(",");
+// const corsOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173").split(
+//   ","
+// );
 
 const app = new Elysia()
   .state("userEmail", "")
-  .use(cors({
-    origin: corsOrigins,
-    credentials: true,
-  }))
+  .use(cors())
   .use(user)
   .use(
     cron({
@@ -34,7 +33,7 @@ const app = new Elysia()
           await purgeData();
         }
       },
-    }),
+    })
   )
   .guard({
     async beforeHandle({ store, cookie: { session }, set }) {
@@ -74,7 +73,7 @@ const app = new Elysia()
       }
 
       const { user, session: validatedSession } = await validateSessionToken(
-        session.value,
+        session.value
       );
 
       if (!user || !validatedSession) {
