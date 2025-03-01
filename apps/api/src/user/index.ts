@@ -13,7 +13,7 @@ const user = new Elysia({ prefix: "/user" })
     jwt({
       name: "sessionToken",
       secret: process.env.JWT_ACCESS ?? "",
-    }),
+    })
   )
   .post(
     "/sign-in",
@@ -22,13 +22,16 @@ const user = new Elysia({ prefix: "/user" })
 
       const token = generateSessionToken();
       const session = await createSession(token, user.id);
+
+      console.log("SIGN IN --> ", { user, session, token });
+
       set.cookie = {
         session: {
           value: token,
           httpOnly: true,
           path: "/",
           secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
+          sameSite: "none",
           expires: session.expiresAt,
         },
       };
@@ -37,7 +40,7 @@ const user = new Elysia({ prefix: "/user" })
     },
     {
       body: t.Omit(signInUserSchema, ["id", "name", "createdAt"]),
-    },
+    }
   )
   .post(
     "/sign-up",
@@ -48,13 +51,16 @@ const user = new Elysia({ prefix: "/user" })
 
       const token = generateSessionToken();
       const session = await createSession(token, user.id);
+
+      console.log("SIGN UP --> ", { user, session, token });
+
       set.cookie = {
         session: {
           value: token,
           httpOnly: true,
           path: "/",
           secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
+          sameSite: "none",
           expires: session.expiresAt,
         },
       };
@@ -63,7 +69,7 @@ const user = new Elysia({ prefix: "/user" })
     },
     {
       body: signUpUserSchema,
-    },
+    }
   )
   .post("/sign-out", async ({ cookie, cookie: { session } }) => {
     await invalidateSession(session?.value ?? "");
