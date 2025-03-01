@@ -33,6 +33,7 @@ ENV PORT=8080
 ENV DB_PATH=/app/apps/api/data/kaneo.db
 ENV JWT_ACCESS=hooji98
 ENV RABBITMQ_URL=amqp://hooji98:hooji98@rabbitmq-render-5rc5.onrender.com
+ENV DEMO_MODE=false
 
 EXPOSE 8080
 
